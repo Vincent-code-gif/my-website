@@ -1,50 +1,70 @@
 "use client";
 
 import React from "react";
+import { TypeAnimation } from "react-type-animation";
+import { motion } from "framer-motion";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 
 const About: React.FC = () => {
   return (
-    <section
+    <motion.section
       id="about"
       className="bg-gray-200 py-16 px-6 flex flex-col items-center text-center"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
     >
       {/* Profile Image */}
-      <div className="mb-6">
-        <img
-          src="/me.jpg" // Replace with your photo path
-          alt="Photo"
-          className="w-40 h-40 rounded-full object-cover shadow-lg border-4 border-white"
-        />
-      </div>
+      <motion.img
+        src="/me.jpg"
+        alt="Vincent"
+        className="w-40 h-40 rounded-full object-cover shadow-lg border-4 border-white mb-6"
+        initial={{ scale: 0.9, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      />
 
-      {/* Title */}
-      <h2 className="text-3xl font-bold text-blue-700 mb-4">About Vincent</h2>
+      {/* Dynamic Intro */}
+      <h2 className="text-3xl font-bold text-blue-700 mb-2">
+        Hello, I’m Vincent Omondi
+      </h2>
 
-      {/* Short Description */}
+      <TypeAnimation 
+        sequence={[
+          "Frontend Developer 🚀",
+          1500,
+          "Tech Enthusiast 💻",
+          1500,
+          "Creative Problem Solver 💡",
+          1500,
+          "Lifelong Learner 📚",
+          1500,
+        ]}
+        wrapper="span"
+        speed={50}
+        repeat={Infinity}
+        className="text-xl text-pink-700 font-semibold mb-6"
+      />
+
+      {/* Paragraph */}
       <p className="text-gray-700 max-w-2xl leading-relaxed mb-8">
-        Hello! I’m <span className="font-semibold text-blue-700">Vincent Omondi</span>,
-        a Frontend Web Developer dedicated to creating intuitive, user-centered
-        digital experiences that make a meaningful impact. I specialize in developing clean,
-        responsive, and visually engaging interfaces using modern web technologies and design principles.
-        While my primary focus is on frontend development, I also have foundational knowledge of backend
-        technologies, allowing me to approach projects with a holistic understanding of web development.
-        Beyond coding, I bring a background in accounting and administration, which has strengthened my
-        skills in organization, precision, and accountability. I’m passionate about collaboration, continuous
-        learning, and innovation, and I strive to leverage technology as a powerful tool for problem-solving and community growth.
+        I’m passionate about creating intuitive, user-centered digital
+        experiences that inspire and empower people. I specialize in clean,
+        responsive, and engaging web interfaces using modern technologies. My
+        background in administration and accounting adds precision and
+        organization to my work.
       </p>
 
       {/* Buttons */}
       <div className="flex flex-wrap justify-center gap-4">
         <a
-          href="/Vincent_CV.pdf" // Replace with your CV file path
+          href="/Vincent_CV.pdf"
           download
           className="flex items-center gap-2 bg-blue-700 text-white px-6 py-3 rounded-full shadow-md hover:bg-blue-800 transition-transform transform hover:scale-105"
         >
           <ArrowDownTrayIcon className="w-5 h-5" />
           Download CV
         </a>
-
         <a
           href="#hire"
           className="bg-white border border-blue-700 text-blue-700 px-6 py-3 rounded-full shadow-md hover:bg-blue-100 transition-transform transform hover:scale-105"
@@ -52,42 +72,7 @@ const About: React.FC = () => {
           Hire Me
         </a>
       </div>
-
-      {/* Optional extra section for resources */}
-      <div className="mt-10 max-w-2xl text-gray-600">
-        <h3 className="text-lg font-semibold text-blue-700 mb-2">
-          Additional Resources
-        </h3>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="/portfolio.pdf"
-              className="text-blue-600 hover:underline"
-              target="_blank"
-            >
-              View My Portfolio
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://linkedin.com/in/yourusername"
-              className="text-blue-600 hover:underline"
-              target="_blank"
-            >
-              Connect on LinkedIn
-            </a>
-          </li>
-          <li>
-            <a
-              href="mailto:vincentomondi0041@gmail.com"
-              className="text-blue-600 hover:underline"
-            >
-              Contact Me via Email
-            </a>
-          </li>
-        </ul>
-      </div>
-    </section>
+    </motion.section>
   );
 };
 

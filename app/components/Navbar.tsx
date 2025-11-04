@@ -1,23 +1,48 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("header");
 
-  // Navigation links with section IDs
   const NAVIGATION_LINKS = [
     { name: "Home", path: "#header" },
     { name: "Projects", path: "#projects" },
     { name: "Contact", path: "#contact" },
     { name: "About", path: "#about" },
-    
   ];
+
+  useEffect(() => {
+    const sections = NAVIGATION_LINKS.map(link =>
+      document.querySelector(link.path)
+    );
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        });
+      },
+      { threshold: 0.6 } // Adjust sensitivity (0.6 = 60% visible)
+    );
+
+    sections.forEach(section => {
+      if (section) observer.observe(section);
+    });
+
+    return () => {
+      sections.forEach(section => {
+        if (section) observer.unobserve(section);
+      });
+    };
+  }, []);
 
   return (
     <nav className="bg-gradient-to-r from-blue-400 via-blue-300 to-pink-300 shadow-md sticky top-0 z-50">
-
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center py-3">
           {/* Left: Logo + Title */}
@@ -37,11 +62,15 @@ const Navbar: React.FC = () => {
 
           {/* Right: Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6">
-            {NAVIGATION_LINKS.map((link) => (
+            {NAVIGATION_LINKS.map(link => (
               <a
                 key={link.name}
                 href={link.path}
-                className="text-gray-700 font-medium hover:text-blue-700 transition-colors duration-300"
+                className={`font-medium transition-colors duration-300 ${
+                  activeSection === link.path
+                    ? "text-white bg-blue-700 px-3 py-1 rounded-md"
+                    : "text-gray-700 hover:text-blue-700"
+                }`}
               >
                 {link.name}
               </a>
@@ -68,12 +97,16 @@ const Navbar: React.FC = () => {
       {isOpen && (
         <div className="md:hidden bg-blue-100 border-t border-blue-300">
           <div className="px-4 py-3 space-y-2">
-            {NAVIGATION_LINKS.map((link) => (
+            {NAVIGATION_LINKS.map(link => (
               <a
                 key={link.name}
                 href={link.path}
                 onClick={() => setIsOpen(false)}
-                className="block text-gray-700 font-medium hover:text-blue-700 transition-colors duration-300"
+                className={`block font-medium transition-colors duration-300 ${
+                  activeSection === link.path
+                    ? "text-blue-700 font-bold"
+                    : "text-gray-700 hover:text-blue-700"
+                }`}
               >
                 {link.name}
               </a>
